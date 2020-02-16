@@ -1,7 +1,7 @@
 // Instanciate the Classes
 const ui = new UI(),
-      cocktail = new CocktailAPI(),
-      cocktailDB = new CocktailDB();
+     cocktail = new CocktailAPI(),
+     cocktailDB = new CocktailDB();
 
 
 // Create the Event Listeners
@@ -11,33 +11,27 @@ function eventListeners() {
 
      // Add event listener when form is submitted
      const searchForm = document.querySelector('#search-form');
-     if(searchForm) {
-          searchForm.addEventListener('submit', getCocktails);
-     }
+     searchForm && searchForm.addEventListener('submit', getCocktails);
 
      // The results div listeners
      const resultsDiv = document.querySelector('#results');
-     if(resultsDiv) {
-          resultsDiv.addEventListener('click', resultsDelegation);
-     }
-     
+     resultsDiv && resultsDiv.addEventListener('click', resultsDelegation);
 }
 
 eventListeners();
-
 
 
 // Get cocktails function
 function getCocktails(e) {
      e.preventDefault();
 
-    const searchTerm = document.querySelector('#search').value;
+     const searchTerm = document.querySelector('#search').value;
 
-    // Check something is on the search input
-    if(searchTerm === '') {
-         // Call User Interface print message
-         ui.printMessage('Please add something into the form', 'danger');
-    } else {
+     // Check something is on the search input
+     if (searchTerm === '') {
+          // Call User Interface print message
+          ui.printMessage('Please add something into the form', 'danger');
+     } else {
           // Server response from promise
           let serverResponse;
 
@@ -47,40 +41,40 @@ function getCocktails(e) {
           // Evaluate the type of method and then execute the query
 
 
-          switch(type) {
+          switch (type) {
                case 'name':
-                    serverResponse = cocktail.getDrinksByName( searchTerm );
+                    serverResponse = cocktail.getDrinksByName(searchTerm);
                     break;
                case 'ingredient':
-                    serverResponse = cocktail.getDrinksByIngredient( searchTerm );
+                    serverResponse = cocktail.getDrinksByIngredient(searchTerm);
                     break;
                case 'category':
-                    serverResponse = cocktail.getDrinksByCategory( searchTerm );
+                    serverResponse = cocktail.getDrinksByCategory(searchTerm);
                     break;
-               case 'alcohol': 
+               case 'alcohol':
                     serverResponse = cocktail.getDrinksByAlcohol(searchTerm);
                     break;
           }
 
           ui.clearResults();
 
-         // Query by the name of the drink
-         
-         serverResponse.then(cocktails => {
-               if(cocktails.cocktails.drinks === null) {
+          // Query by the name of the drink
+
+          serverResponse.then(cocktails => {
+               if (cocktails.cocktails.drinks === null) {
                     // Nothing exists
                     ui.printMessage('There\'re no results, try a different term ', 'danger');
                } else {
-                    if(type === 'name') {
+                    if (type === 'name') {
                          // Display with ingredients
-                         ui.displayDrinksWithIngredients( cocktails.cocktails.drinks );
+                         ui.displayDrinksWithIngredients(cocktails.cocktails.drinks);
                     } else {
                          // Display without Ingredients (category, alcohol, ingredient)
                          ui.displayDrinks(cocktails.cocktails.drinks);
                     }
                }
           })
-    }
+     }
 
 }
 
@@ -88,24 +82,24 @@ function getCocktails(e) {
 function resultsDelegation(e) {
      e.preventDefault();
 
-     if(e.target.classList.contains('get-recipe')) {
-          cocktail.getSingleRecipe( e.target.dataset.id )
+     if (e.target.classList.contains('get-recipe')) {
+          cocktail.getSingleRecipe(e.target.dataset.id)
                .then(recipe => {
                     // Displays single recipe into a modal
-                    ui.displaySingleRecipe( recipe.recipe.drinks[0] );
-                    
+                    ui.displaySingleRecipe(recipe.recipe.drinks[0]);
+
                })
-     } 
+     }
 
      // When favorite btn is clicked
-     if(e.target.classList.contains('favorite-btn')) {
-          if(e.target.classList.contains('is-favorite') ) {
+     if (e.target.classList.contains('favorite-btn')) {
+          if (e.target.classList.contains('is-favorite')) {
                // remove the class
                e.target.classList.remove('is-favorite');
                e.target.textContent = '+';
 
                // Remove from Storage
-               cocktailDB.removeFromDB( e.target.dataset.id );
+               cocktailDB.removeFromDB(e.target.dataset.id);
           } else {
                // Add the class
                e.target.classList.add('is-favorite');
@@ -125,7 +119,7 @@ function resultsDelegation(e) {
                cocktailDB.saveIntoDB(drinkInfo);
           }
      }
-     
+
 }
 
 // Document Ready
@@ -135,13 +129,11 @@ function documentReady() {
 
      // Select the search category select
      const searchCategory = document.querySelector('.search-category');
-     if(searchCategory) {
-          ui.displayCategories();
-     }
+     searchCategory && ui.displayCategories();
 
      // When favorites page
      const favoritesTable = document.querySelector('#favorites');
-     if(favoritesTable) {
+     if (favoritesTable) {
           // Get the favorites from storage and display them
           const drinks = cocktailDB.getFromDB();
           ui.displayFavorites(drinks);
@@ -152,21 +144,21 @@ function documentReady() {
                e.preventDefault();
 
                // Delegation
-               if(e.target.classList.contains('get-recipe')) {
-                    cocktail.getSingleRecipe( e.target.dataset.id )
+               if (e.target.classList.contains('get-recipe')) {
+                    cocktail.getSingleRecipe(e.target.dataset.id)
                          .then(recipe => {
                               // Displays single recipe into a modal
-                              ui.displaySingleRecipe( recipe.recipe.drinks[0] );
-                              
+                              ui.displaySingleRecipe(recipe.recipe.drinks[0]);
+
                          })
                }
                // When remove button is clicked in favorites
-               if(e.target.classList.contains('remove-recipe')) {
+               if (e.target.classList.contains('remove-recipe')) {
                     // Remove from dom
-                    ui.removeFavorite( e.target.parentElement.parentElement );
+                    ui.removeFavorite(e.target.parentElement.parentElement);
 
                     // Remove from the Local Storage
-                    cocktailDB.removeFromDB( e.target.dataset.id );
+                    cocktailDB.removeFromDB(e.target.dataset.id);
                }
           })
      }
