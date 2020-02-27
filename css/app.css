@@ -1,0 +1,92 @@
+:root {
+  --white: #fff;
+  --light-gray: #f2f2f2;
+  --dark-gray: #333;
+  --font-primary: "Source Sans Pro", sans-serif;
+  --font-display: "Alegreya", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+
+img {
+  width: 100%;
+  max-width: 100%;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+}
+
+/* RESET END */
+
+body {
+  font-family: var(--font-primary);
+  font-size: 1.6rem;
+  color: var(--dark-gray);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+.main-header {
+  border-bottom: 1px solid var(--light-gray);
+  padding: 1.5rem 3rem;
+}
+
+.main-header h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+}
+
+main {
+  padding: 0 3rem;
+}
+
+#search-area {
+  margin-top: 3rem;
+  padding: 0 3rem;
+}
+
+#search-term {
+  border: 1px solid var(--light-gray);
+  padding: 1rem;
+}
+
+.cocktail-item {
+  margin-top: 3rem;
+}
+
+.cocktail-item h1 {
+  font-weight: 400;
+  font-size: 3rem;
+  margin: 0.5rem 0;
+}
+
+.cocktail-item h2 {
+  font-weight: 500;
+  font-size: 1.6rem;
+  margin: 0.5rem 0;
+}
+
+.ingredients {
+  margin-top: 1.5rem;
+}
